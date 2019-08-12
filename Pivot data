@@ -1,0 +1,65 @@
+**Pivot data
+
+Pivoting data is the opposite of melting it. Remember the tidy form that the airquality DataFrame was in before you melted it? You'll now begin pivoting it back into that form using the .pivot_table() method!
+
+While melting takes a set of columns and turns it into a single column, pivoting will create a new column for each unique value in a specified column.
+
+.pivot_table() has an index parameter which you can use to specify the columns that you don't want pivoted: It is similar to the id_vars parameter of pd.melt(). Two other parameters that you have to specify are columns (the name of the column you want to pivot), and values (the values to be used when the column is pivoted). The melted DataFrame airquality_melt has been pre-loaded for you.
+
+# Print the head of airquality_melt
+print(airquality_melt.head())
+
+# Pivot airquality_melt: airquality_pivot
+airquality_pivot = airquality_melt.pivot_table(index=['Month', 'Day'], columns='measurement', values='reading')
+
+# Print the head of airquality_pivot
+print(airquality_pivot.head())
+
+**Resetting the index of a DataFrame
+
+After pivoting airquality_melt in the previous exercise, you didn't quite get back the original DataFrame.
+
+What you got back instead was a pandas DataFrame with a hierarchical index (also known as a MultiIndex).
+
+Hierarchical indexes are covered in depth in Manipulating DataFrames with pandas. In essence, they allow you to group columns or rows by another variable - in this case, by 'Month' as well as 'Day'.
+
+There's a very simple method you can use to get back the original DataFrame from the pivoted DataFrame: .reset_index(). Dan didn't show you how to use this method in the video, but you're now going to practice using it in this exercise to get back the original DataFrame from airquality_pivot, which has been pre-loaded.
+
+# Print the index of airquality_pivot
+print(airquality_pivot.index)
+
+# Reset the index of airquality_pivot: airquality_pivot_reset
+airquality_pivot_reset = airquality_pivot.reset_index()
+
+# Print the new index of airquality_pivot_reset
+print(airquality_pivot_reset.index)
+
+# Print the head of airquality_pivot_reset
+print(airquality_pivot_reset.head())
+
+**Pivoting duplicate values
+
+So far, you've used the .pivot_table() method when there are multiple index values you want to hold constant during a pivot. In the video, Dan showed you how you can also use pivot tables to deal with duplicate values by providing an aggregation function through the aggfunc parameter. Here, you're going to combine both these uses of pivot tables.
+
+Let's say your data collection method accidentally duplicated your dataset. Such a dataset, in which each row is duplicated, has been pre-loaded as airquality_dup. In addition, the airquality_melt DataFrame from the previous exercise has been pre-loaded. Explore their shapes in the IPython Shell by accessing their .shape attributes to confirm the duplicate rows present in airquality_dup.
+
+You'll see that by using .pivot_table() and the aggfunc parameter, you can not only reshape your data, but also remove duplicates. Finally, you can then flatten the columns of the pivoted DataFrame using .reset_index().
+
+NumPy and pandas have been imported as np and pd respectively.
+
+# Pivot table the airquality_dup: airquality_pivot
+airquality_pivot = airquality_dup.pivot_table(index=['Month', 'Day'], columns='measurement', values='reading', aggfunc=np.mean)
+
+# Print the head of airquality_pivot before reset_index
+print(airquality_pivot.head)
+
+# Reset the index of airquality_pivot
+airquality_pivot = airquality_pivot.reset_index()
+
+# Print the head of airquality_pivot
+print(airquality_pivot.head())
+
+# Print the head of airquality
+print(airquality.head())
+
+
